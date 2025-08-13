@@ -1,0 +1,69 @@
+# -------------------
+# Node.js
+# -------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# -------------------
+# Build output
+# -------------------
+dist/
+build/
+
+# -------------------
+# Environment variables
+# -------------------
+.env
+.env.local
+.env.*.local
+
+# -------------------
+# Logs
+# -------------------
+logs
+*.log
+*.log.*
+
+# -------------------
+# OS generated files
+# -------------------
+.DS_Store
+Thumbs.db
+
+# -------------------
+# Editor files
+# -------------------
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# -------------------
+# Python (Face Recognition scripts)
+# -------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.npy
+
+# -------------------
+# Uploads / Temp files
+# -------------------
+backend/uploads/
+frontend/uploads/
+
+# -------------------
+# Coverage / Test
+# -------------------
+coverage/
+*.lcov
