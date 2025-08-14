@@ -1,8 +1,10 @@
 import express from 'express';
 import {
-  getAllAttendance,
-  recordAttendance,
-  exportAttendance
+    getAllAttendance,
+    recordAttendance,
+    exportAttendance,
+    getAttendanceByDateRange,
+    getAttendanceByUser
 } from '../controllers/attendanceController.js';
 
 import { verifyToken } from '../middlewares/authMiddleware.js';
@@ -17,5 +19,11 @@ router.post('/', verifyToken, recordAttendance);
 
 // ✅ GET /api/attendance/export
 router.get('/export', verifyToken, exportAttendance);
+
+// ✅ GET /api/attendance/by-date
+router.get('/by-date', verifyToken, getAttendanceByDateRange);
+
+// ✅ GET /api/attendance/user/:user_id
+router.get('/user/:user_id', verifyToken, getAttendanceByUser);
 
 export default router;

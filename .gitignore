@@ -22,6 +22,7 @@ client/package-lock.json
 # -----------------------------
 python-service/__pycache__/
 python-service/.venv/
+python-service/venv/
 python-service/env/
 python-service/.env
 python-service/*.pyc
