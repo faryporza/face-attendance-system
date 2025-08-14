@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
@@ -12,7 +12,9 @@ const Login = () => {
   const [error, setError] = useState('');
 
   // ถ้าล็อกอินแล้วให้ redirect
-  if (isAuthenticated) {
+  // allow forcing the login page even if authenticated by adding ?force=1
+  const forceLogin = new URLSearchParams(useLocation().search).get('force') === '1';
+  if (isAuthenticated && !forceLogin) {
     return <Navigate to="/dashboard" replace />;
   }
 

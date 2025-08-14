@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Pages
@@ -39,6 +39,8 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 // Public Route Component (redirect if already logged in)
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
+  const location = useLocation();
+  const isLoginPath = location.pathname === '/login';
 
   if (loading) {
     return (
@@ -51,7 +53,8 @@ const PublicRoute = ({ children }) => {
     );
   }
 
-  if (isAuthenticated) {
+  // Allow visiting the login page even when authenticated
+  if (isAuthenticated && !isLoginPath) {
     return <Navigate to="/dashboard" replace />;
   }
 

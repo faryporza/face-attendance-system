@@ -3,10 +3,9 @@ import {
     getAllAttendance,
     recordAttendance,
     recordAttendanceWithFace,
-    upload,
     exportAttendance,
     getAttendanceByDateRange,
-    getAttendanceByUser
+    getAttendanceHistory
 } from '../controllers/attendanceController.js';
 
 import { verifyToken } from '../middlewares/authMiddleware.js';
@@ -20,7 +19,8 @@ router.get('/', verifyToken, getAllAttendance);
 router.post('/', verifyToken, recordAttendance);
 
 // ✅ POST /api/attendance/record (สำหรับ face recognition)
-router.post('/record', upload.single('image'), recordAttendanceWithFace);
+// Use controller's handler which invokes multer internally — do NOT mount upload.single here.
+router.post('/record', recordAttendanceWithFace);
 
 // ✅ GET /api/attendance/export
 router.get('/export', verifyToken, exportAttendance);
@@ -28,7 +28,9 @@ router.get('/export', verifyToken, exportAttendance);
 // ✅ GET /api/attendance/by-date
 router.get('/by-date', verifyToken, getAttendanceByDateRange);
 
-// ✅ GET /api/attendance/user/:user_id
-router.get('/user/:user_id', verifyToken, getAttendanceByUser);
+// GET /api/attendance/history - ดูประวัติการเข้างาน
+router.get('/history', getAttendanceHistory);
 
 export default router;
+router.get('/history', getAttendanceHistory);
+

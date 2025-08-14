@@ -34,13 +34,11 @@ export const employeeService = {
   // อัปโหลดรูปภาพใบหน้า
   uploadFaceImage: async (id, imageFile) => {
     const formData = new FormData();
-    formData.append('image', imageFile);
+    // use 'face_image' to match backend
+    formData.append('face_image', imageFile);
     
-    const response = await api.post(`/users/${id}/face-image`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    // let axios set Content-Type (including boundary) automatically
+    const response = await api.post(`/users/${id}/face-image`, formData);
     return response.data;
   }
 };

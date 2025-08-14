@@ -1,39 +1,39 @@
 import express from 'express';
-import userRoutes from './routes/userRoutes.js';
-import attendanceRoutes from './routes/attendanceRoutes.js';
-import authRoutes from './routes/authRoutes.js';
 import cors from 'cors';
-import morgan from 'morgan';
+import attendanceRoutes from './routes/attendanceRoutes.js';
 
 const app = express();
 
-// ✅ Middleware
+// Middleware
 app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ✅ Static สำหรับภาพพนักงาน
-app.use('/uploads', express.static('uploads'));
+// Log Content-Type for attendance endpoints to help debug multipart issues
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/attendance')) {
+    console.log(`${req.method} ${req.path} - Content-Type:`, req.headers['content-type']);
+  }
+  next();
+});
 
-// ✅ Routes
-app.use('/api/users', userRoutes);
+// Routes
 app.use('/api/attendance', attendanceRoutes);
-app.use('/api/auth', authRoutes); // ✅ ต้องมี
 
-// ✅ Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err.message);
-  console.error('Stack:', err.stack);
-  res.status(500).json({ 
+// Health check
+app.get('/', (req, res) => {
+  res.json({ message: 'Face Attendance System API is running!' });
+});
+
+// Error handling middleware
+app.use((error, req, res, next) => {
+  console.error('❌ Server Error:', error);
+  res.status(500).json({
+    success: false,
     message: 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
+    error: error.message
   });
 });
 
-// ✅ 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
-
 export default app;
+

@@ -1,26 +1,40 @@
 import api from './api';
 
-export const attendanceService = {
-  // บันทึกเวลาเข้า-ออกงานด้วยการสแกนใบหน้า
-  recordAttendance: async (imageBlob) => {
-    const formData = new FormData();
-    formData.append('image', imageBlob, 'attendance.jpg');
-    
-    const response = await api.post('/attendance/record', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data;
+const attendanceService = {
+  /**
+   * Records attendance by sending face image data.
+   * @param {FormData} formData The form data containing the face image.
+   * @returns {Promise<object>} The response data from the API.
+   */
+  recordAttendance: async (formData) => {
+    try {
+      // Do not set Content-Type here — let axios set multipart/form-data with boundary
+      const { data } = await api.post('/attendance/record', formData);
+      return data;
+    } catch (error) {
+      console.error('Error in recordAttendance service:', error.response?.data || error.message);
+      throw error;
+    }
   },
 
-  // ดึงบันทึกการเข้าออกงานทั้งหมด
-  getAllAttendance: async (params = {}) => {
-    const { page = 1, limit = 10, startDate, endDate, employeeId } = params;
-    const queryParams = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
+  /**
+   * Fetches the attendance history.
+   * @returns {Promise<object>} The attendance history data.
+   */
+  getAttendanceHistory: async () => {
+    try {
+      const { data } = await api.get('/attendance/history');
+      return data;
+    } catch (error) {
+      console.error('Error in getAttendanceHistory service:', error.response?.data || error.message);
+      throw error;
+    }
+  },
+
+  // ดึงข้อมูลการเข้าออกงาน
+  getAttendance: async (params = {}) => {
+    const { startDate, endDate, employeeId } = params;
+    const queryParams = new URLSearchParams();
 
     if (startDate) queryParams.append('startDate', startDate);
     if (endDate) queryParams.append('endDate', endDate);
@@ -82,3 +96,4 @@ export const attendanceService = {
 };
 
 export default attendanceService;
+

@@ -1,12 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000/api';
-
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  // The base URL will be proxied by Vite's dev server to http://localhost:3000
+  baseURL: '/api',
 });
 
 // Request interceptor เพื่อใส่ token
@@ -36,3 +32,4 @@ api.interceptors.response.use(
 );
 
 export default api;
+

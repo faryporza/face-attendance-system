@@ -4,44 +4,55 @@ import attendanceService from '../services/attendanceService';
 
 const Home = () => {
   const [isCapturing, setIsCapturing] = useState(false);
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState(''); // 'success', 'error', 'info'
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
 
   const handleCapture = async (imageBlob) => {
-    setIsCapturing(true);
-    setMessage('');
+    if (!imageBlob) {
+      setMessage('No image captured.');
+      setMessageType('error');
+      return;
+    }
 
     try {
-      const response = await attendanceService.recordAttendance(imageBlob);
-      
+      setIsCapturing(true);
+      setMessage(null);
+      setMessageType(null);
+
+      // ensure field name matches backend multer: 'face_image'
+      const formData = new FormData();
+      formData.append('face_image', imageBlob, 'capture.jpg');
+
+      const response = await attendanceService.recordAttendance(formData);
+
       if (response.success) {
+        setMessage(`บันทึกเวลาสำเร็จ! ชื่อ: ${response.data.person_name}`);
         setMessageType('success');
-        setMessage(`สวัสดี ${response.employee?.name}! บันทึกเวลา${response.type === 'check-in' ? 'เข้างาน' : 'ออกงาน'}เรียบร้อยแล้ว`);
       } else {
+        setMessage(response.message || 'Failed to record attendance.');
         setMessageType('error');
-        setMessage(response.message || 'ไม่พบข้อมูลพนักงาน กรุณาลองใหม่อีกครั้ง');
       }
-    } catch (error) {
-      console.error('Error recording attendance:', error);
+    } catch (err) {
+      console.error('Error recording attendance:', err);
+      setMessage(err.response?.data?.message || err.message || 'An unknown error occurred.');
       setMessageType('error');
-      setMessage(error.response?.data?.message || 'เกิดข้อผิดพลาดในการบันทึกเวลา');
     } finally {
       setIsCapturing(false);
     }
   };
 
-  const handleError = (errorMessage) => {
+  const handleError = (error) => {
+    setMessage(error);
     setMessageType('error');
-    setMessage(errorMessage);
   };
 
   const clearMessage = () => {
-    setMessage('');
-    setMessageType('');
+    setMessage(null);
+    setMessageType(null);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
