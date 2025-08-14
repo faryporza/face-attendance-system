@@ -2,6 +2,8 @@ import express from 'express';
 import {
     getAllAttendance,
     recordAttendance,
+    recordAttendanceWithFace,
+    upload,
     exportAttendance,
     getAttendanceByDateRange,
     getAttendanceByUser
@@ -16,6 +18,9 @@ router.get('/', verifyToken, getAllAttendance);
 
 // ✅ POST /api/attendance
 router.post('/', verifyToken, recordAttendance);
+
+// ✅ POST /api/attendance/record (สำหรับ face recognition)
+router.post('/record', upload.single('image'), recordAttendanceWithFace);
 
 // ✅ GET /api/attendance/export
 router.get('/export', verifyToken, exportAttendance);

@@ -1,53 +1,65 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import authService from '../services/authService';
 
 const AuthContext = createContext();
 
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // ข้อมูลผู้ใช้
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (token) {
-      fetchUserProfile();
-    }
-  }, [token]);
-
-  const fetchUserProfile = async () => {
-    try {
-      const res = await fetch('http://localhost:3000/api/auth/profile', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data.user);
-      } else {
-        logout();
+    const initAuth = () => {
+      if (authService.isAuthenticated()) {
+        const currentUser = authService.getCurrentUser();
+        setUser(currentUser);
       }
-    } catch (err) {
-      console.error(err);
-      logout();
-    }
-  };
+      setLoading(false);
+    };
 
-  const login = (token) => {
-    localStorage.setItem('token', token);
-    setToken(token);
+    initAuth();
+  }, []);
+
+  const login = async (credentials) => {
+    try {
+      const response = await authService.login(credentials);
+      setUser(response.user);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
+    authService.logout();
     setUser(null);
   };
 
+  const isAdmin = () => {
+    return user?.role === 'admin';
+  };
+
+  const value = {
+    user,
+    loading,
+    login,
+    logout,
+    isAdmin,
+    isAuthenticated: authService.isAuthenticated(),
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook ใช้ใน Component
-export const useAuth = () => useContext(AuthContext);
+export default AuthContext;
