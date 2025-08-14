@@ -1,0 +1,53 @@
+# -----------------------------
+# Node.js (server/)
+# -----------------------------
+node_modules/
+.env
+package-lock.json
+dist/
+uploads/
+*.log
+
+# -----------------------------
+# Vite React Frontend (client/)
+# -----------------------------
+client/node_modules/
+client/dist/
+client/.env
+client/.DS_Store
+client/package-lock.json
+
+# -----------------------------
+# Python Service (python-service/)
+# -----------------------------
+python-service/__pycache__/
+python-service/.venv/
+python-service/env/
+python-service/.env
+python-service/*.pyc
+python-service/*.pkl
+python-service/*.npy
+python-service/encodings/
+python-service/known_faces/
+
+# -----------------------------
+# System files
+# -----------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# -----------------------------
+# Log files
+# -----------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# -----------------------------
+# Excel exports (optional)
+# -----------------------------
+*.xlsx

@@ -1,0 +1,76 @@
+face-attendance-system/
+├── client/                             # 🔵 Frontend (React + Vite + TailwindCSS)
+│   ├── public/
+│   │   └── vite.svg
+│   ├── src/
+│   │   ├── assets/                     # รูปภาพ โลโก้
+│   │   ├── components/                # UI Components ย่อย ๆ
+│   │   │   ├── WebcamCapture.jsx
+│   │   │   ├── Table.jsx
+│   │   │   ├── Chart.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Sidebar.jsx
+│   │   ├── layouts/                   # Layout หลัก เช่น AdminLayout
+│   │   │   └── AdminLayout.jsx
+│   │   ├── pages/                     # หน้าหลักแต่ละฟีเจอร์
+│   │   │   ├── Home.jsx              # สแกนใบหน้า
+│   │   │   ├── Dashboard.jsx         # Dashboard Admin
+│   │   │   ├── Employees.jsx         # จัดการพนักงาน
+│   │   │   ├── Attendance.jsx        # ดูบันทึกเข้า/ออก
+│   │   │   ├── Report.jsx            # รายงาน + export excel
+│   │   │   └── Login.jsx             # หน้า Login Admin
+│   │   ├── services/                 # API Calls
+│   │   │   ├── api.js
+│   │   │   ├── authService.js
+│   │   │   ├── employeeService.js
+│   │   │   └── attendanceService.js
+│   │   ├── contexts/                 # Auth Context
+│   │   │   └── AuthContext.jsx
+│   │   ├── utils/
+│   │   │   ├── formatDate.js
+│   │   │   └── exportToExcel.js
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   ├── index.css
+│   │   └── App.css
+│   ├── index.html
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   ├── postcss.config.js
+│   └── package.json
+│
+├── server/                             # 🟢 Backend (Node.js + Express + MySQL)
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── userController.js
+│   │   └── attendanceController.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── userRoutes.js
+│   │   └── attendanceRoutes.js
+│   ├── middlewares/
+│   │   └── authMiddleware.js
+│   ├── config/
+│   │   └── db.js                      # MySQL connection
+│   ├── utils/
+│   │   └── excelExport.js
+│   ├── app.js                         # รวม middleware
+│   ├── server.js                      # จุดเริ่มรัน Express
+│   ├── .env
+│   └── package.json
+│
+├── python-service/                    # 🐍 Python Flask Face Recognition API
+│   ├── known_faces/                   # รูปภาพพนักงานที่รู้จัก
+│   │   └── emp_001.jpg
+│   ├── encodings/                     # face_encoding ที่แปลงแล้ว (optional)
+│   │   └── emp_001.npy
+│   ├── face_recognition_service.py   # Flask API รับภาพ base64 แล้วเปรียบเทียบ
+│   ├── encode_faces.py               # ใช้ตอนฝึก encoding ใหม่
+│   ├── utils.py                      # ฟังก์ชัน encode/compare
+│   ├── requirements.txt
+│   └── README.md
+│
+├── database/
+│   ├── init.sql                       # สร้างตาราง MySQL: users, attendance, admin
+│
+└── README.md
