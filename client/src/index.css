@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  background-color: rgb(243 244 246);
+  font-family: 'Prompt', sans-serif;
+  background-color: #fefef2;
 }

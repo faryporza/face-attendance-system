@@ -19,7 +19,7 @@ app.use('/uploads', express.static('uploads'));
 // ✅ Routes
 app.use('/api/users', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes); // ✅ ต้องมี
 
 // ✅ Error handling middleware
 app.use((err, req, res, next) => {

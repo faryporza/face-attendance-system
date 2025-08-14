@@ -20,3 +20,12 @@ export const loginAdmin = async (req, res) => {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดกับระบบ' });
   }
 };
+
+// ✅ ตรวจสอบว่ามีการ import middleware ที่เช็ก token ด้วยถ้าจำเป็น
+export const getProfile = (req, res) => {
+  try {
+    res.json({ user: req.user }); // หรือข้อมูลอื่นจาก token
+  } catch (err) {
+    res.status(500).json({ message: 'Error getting profile' });
+  }
+};
