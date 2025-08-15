@@ -1,5 +1,5 @@
 face-attendance-system/
-├── client/                             # 🔵 Frontend (React + Vite + TailwindCSS)
+├── client/                             # Frontend (React + Vite + TailwindCSS)
 │   ├── public/
 │   │   └── vite.svg
 │   ├── src/
@@ -39,7 +39,7 @@ face-attendance-system/
 │   ├── postcss.config.js
 │   └── package.json
 │
-├── server/                             # 🟢 Backend (Node.js + Express + MySQL)
+├── server/                             # Backend (Node.js + Express + MySQL)
 │   ├── controllers/
 │   │   ├── authController.js
 │   │   ├── userController.js
@@ -59,7 +59,7 @@ face-attendance-system/
 │   ├── .env
 │   └── package.json
 │
-├── python-service/                    # 🐍 Python Flask Face Recognition API
+├── python-service/                    # Python Flask Face Recognition API
 │   ├── known_faces/                   # รูปภาพพนักงานที่รู้จัก
 │   │   └── emp_001.jpg
 │   ├── encodings/                     # face_encoding ที่แปลงแล้ว (optional)
